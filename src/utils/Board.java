@@ -20,7 +20,7 @@ public class Board {
         this.blocks = blocks;
         this.board = new char[length][width];
         this.blockAmount = blocks.size();
-        getAllVariantShapes();
+        // getAllVariantShapes();
 
         // default board
         for (int i = 0; i < length; i++) {
@@ -48,19 +48,19 @@ public class Board {
     }
 
 
-    private void getAllVariantShapes() {
-        for (int i = 0; i < blocks.size(); i++) {
-            Block newBlock = blocks.get(i);
-            for (int j = 0; j < 2; j++) {
-                for (int k = 0; k < 4; k++) {
-                    newBlock.rotateBlock();
-                    allVariantBlock.add(newBlock);
-                }
-                newBlock.mirrorBlock();    
-            }
-        }
-        return;
-    }
+    // private void getAllVariantShapes() {
+    //     for (int i = 0; i < blocks.size(); i++) {
+    //         Block newBlock = blocks.get(i);
+    //         for (int j = 0; j < 2; j++) {
+    //             for (int k = 0; k < 4; k++) {
+    //                 char[][] newRotatedBlock = newBlock.rotateBlock();
+    //                 allVariantBlock.add(newBlock);
+    //             }
+    //             newBlock.mirrorBlock();    
+    //         }
+    //     }
+    //     return;
+    // }
 
     // fucntions
     public void printBoard() {
@@ -117,6 +117,41 @@ public class Board {
         return true;
     }
 
+    public boolean validLocation(char[][] block, int x, int y) {
+        for (int i = 0; i < block.length; i++) {
+            for (int j = 0; j < block[0].length; j++) {
+                if (block[i][j] != '.') {
+                    if (x + i >= length || y + j >= width || x + i < 0 || y + j < 0) {
+                        return false;
+                    } else if (board[x + i][y + j] != '.') {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public void addBlockUsingMatrix(char[][] block, int x, int y) {
+        for (int i = 0; i < block.length; i++) {
+            for (int j = 0; j < block[0].length; j++) {
+                if (block[i][j] != '.') {
+                    board[x + i][y + j] = block[i][j];
+                }
+            }
+        }
+    }
+
+    public void removeBlockUsingMatrix(char[][] block, int x, int y, char letter) {
+        for (int i = 0; i < block.length; i++) {
+            for (int j = 0; j < block[0].length; j++) {
+                if (block[i][j] == letter) {
+                    board[x + i][y + j] = '.';
+                }
+            }
+        }
+    }
+
     public void removeBlock(Block block, int x, int y) {
         for (int i = 0; i < block.getLengthBlock(); i++) {
             for (int j = 0; j < block.getWidthBlock(); j++) {
@@ -128,5 +163,19 @@ public class Board {
         }
     }
 
-
+    public int[] findEmptyLocation() {
+        int[] location = new int[2];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                if (board[i][j] == '.') {
+                    location[0] = i;
+                    location[1] = j;
+                    return location;
+                }
+            }
+        }
+        location[0] = -1;
+        location[1] = -1;
+        return location;
+    }
 }

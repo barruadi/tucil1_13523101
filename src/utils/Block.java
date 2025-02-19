@@ -11,7 +11,7 @@ public class Block {
     // TODO: add color property
     private String color;
 
-    public ArrayList<char[][]> allVariantBlock = new ArrayList<char[][]>();
+    private ArrayList<char[][]> allVariantBlock = new ArrayList<char[][]>();
 
     // constructor
     public Block(int lengthBlock, int widthBlock, char blockLetter) {
@@ -45,6 +45,17 @@ public class Block {
         return this.letter;
     }
 
+    public ArrayList<char[][]> getAllVariantBlock() {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
+                allVariantBlock.add(block);
+                block = rotateBlock(block);
+            }
+            mirrorBlock();
+        }
+        return this.allVariantBlock;
+    }
+
 
     // basic functions
     public void shrinkBlock() {
@@ -64,6 +75,12 @@ public class Block {
         char[][] newBlock = new char[maxLength][maxWidth];
         for (int i = 0; i < maxLength; i++) {
             for (int j = 0; j < maxWidth; j++) {
+                newBlock[i][j] = '.';
+            }
+        }
+
+        for (int i = 0; i < maxLength; i++) {
+            for (int j = 0; j < maxWidth; j++) {
                 if (this.block[i][j] == letter) {
                     newBlock[i][j] = letter;
                 }
@@ -74,20 +91,24 @@ public class Block {
 
     public void addRow(String row, int index) {
         for (int i = 0; i < row.length(); i++) {
-            block[index][i] = row.charAt(i);
+            if (row.charAt(i) == letter) {
+                this.block[index][i] = letter;
+            } else {
+                this.block[index][i] = '.';
+            }
         }
     }
 
-    public void rotateBlock() {
-        char[][] rotatedBlock = new char[widthBlock][lengthBlock];
-        for (int i = 0; i < lengthBlock; i++) {
-            for (int j = 0; j < widthBlock; j++) {
-                rotatedBlock[j][lengthBlock - 1 - i] = block[i][j];
+    public char[][] rotateBlock(char[][] block) {
+        int newwidthBlock = block[0].length;
+        int newlengthBlock = block.length;
+        char[][] rotatedBlock = new char[newwidthBlock][newlengthBlock];
+        for (int i = 0; i < newlengthBlock; i++) {
+            for (int j = 0; j < newwidthBlock; j++) {
+                rotatedBlock[j][newlengthBlock - 1 - i] = block[i][j];
             }
         }
-        this.widthBlock = lengthBlock;
-        this.lengthBlock = widthBlock;
-        this.block = rotatedBlock;
+        return rotatedBlock;
     }
 
     public void mirrorBlock() {
@@ -114,13 +135,13 @@ public class Block {
         }
     }
 
-    public void getOrientations() {
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 4; j++) {
-                rotateBlock();
-                allVariantBlock.add(block);
-            }
-            mirrorBlock();
-        }
-    }
+    // public void getOrientations() {
+    //     for (int i = 0; i < 2; i++) {
+    //         for (int j = 0; j < 4; j++) {
+    //             rotateBlock();
+    //             allVariantBlock.add(block);
+    //         }
+    //         mirrorBlock();
+    //     }
+    // }
 }

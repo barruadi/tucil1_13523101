@@ -11,26 +11,22 @@ public class Main {
     private ArrayList<Block> blocks = board.blocks;
 
     public boolean algorithm(int index) {
-        // if (index == board.getBlockAmount() - 1) {
-        //     return true;
-        // }
-
-        Block currentBlock = blocks.get(index);
-        for (Block block: blocks) {
-            for (char[][] variant: block.allVariantBlock) {
-                
-            }
+        if (index == board.getBlockAmount()) {
+            return true;
         }
 
-        for (int i = 0; i < board.getLength(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                if (board.addBlock(currentBlock, i, j)) {
-                    if (algorithm(index + 1)) {
-                        return true;
-                    };
-                    // backtrack
-                    board.removeBlock(currentBlock, i, j);
+        Block currentBlock = blocks.get(index);
+
+        int[] emptyLocation = board.findEmptyLocation();
+
+        for (char[][] blockVariant: currentBlock.getAllVariantBlock()) {
+            if (board.validLocation(blockVariant, emptyLocation[0], emptyLocation[1])) {
+                board.addBlockUsingMatrix(blockVariant, emptyLocation[0], emptyLocation[1]);
+                if (algorithm(index + 1)) {
+                    return true;
                 }
+                // backtrack
+                board.removeBlockUsingMatrix(blockVariant, emptyLocation[0], emptyLocation[1], currentBlock.getLetter());;
             }
         }
         return false;

@@ -40,7 +40,6 @@ public class Input {
                 // check if its last line
                 if (myReader.hasNextLine() == false) {
                     newBlock.shrinkBlock();
-                    newBlock.getOrientations();
                     blocks.add(newBlock);
                     break;
                 }
@@ -51,7 +50,7 @@ public class Input {
                 if (row.charAt(0) != blockLetter) {
                     // add block to list
                     newBlock.shrinkBlock();
-                    newBlock.getOrientations();
+                    
                     blocks.add(newBlock);
 
                     // create new block
