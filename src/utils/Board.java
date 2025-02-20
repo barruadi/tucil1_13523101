@@ -9,7 +9,6 @@ public class Board {
     private char[][] board;
 
     public ArrayList<Block> blocks;
-    public ArrayList<Block> allVariantBlock = new ArrayList<Block>();
     public ArrayList<Block> blocksUsed = new ArrayList<Block>();
     public ArrayList<Character> usedLetter = new ArrayList<Character>();
 
@@ -20,7 +19,6 @@ public class Board {
         this.blocks = blocks;
         this.board = new char[length][width];
         this.blockAmount = blocks.size();
-        // getAllVariantShapes();
 
         // default board
         for (int i = 0; i < length; i++) {
@@ -28,6 +26,15 @@ public class Board {
                 board[i][j] = '.';
             }
         }
+    }
+
+    // constructor for custom shape
+    public Board(int length, int width, ArrayList<Block> blocks, char[][] layout) {
+        this.length = length;
+        this.width = width;
+        this.blocks = blocks;
+        this.board = layout;
+        this.blockAmount = blocks.size();
     }
 
     // getter
@@ -47,27 +54,11 @@ public class Board {
         return this.board[x][y];
     }
 
-
-    // private void getAllVariantShapes() {
-    //     for (int i = 0; i < blocks.size(); i++) {
-    //         Block newBlock = blocks.get(i);
-    //         for (int j = 0; j < 2; j++) {
-    //             for (int k = 0; k < 4; k++) {
-    //                 char[][] newRotatedBlock = newBlock.rotateBlock();
-    //                 allVariantBlock.add(newBlock);
-    //             }
-    //             newBlock.mirrorBlock();    
-    //         }
-    //     }
-    //     return;
-    // }
-
-    // fucntions
+    // functions
     public void printBoard() {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
-                // TODO: print letter with color
-                System.out.print(board[i][j]);
+                new Utils().printColor(board[i][j]);
             }
             System.out.println();
         }
@@ -118,12 +109,15 @@ public class Board {
     }
 
     public boolean validLocation(char[][] block, int x, int y) {
+        int xOffset = Utils.findIndex(block[0]);
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
+                int xloc = (x + i);
+                int yloc = (y + j - xOffset);
                 if (block[i][j] != '.') {
-                    if (x + i >= length || y + j >= width || x + i < 0 || y + j < 0) {
+                    if (xloc >= length || yloc >= width || xloc < 0 || yloc < 0) {
                         return false;
-                    } else if (board[x + i][y + j] != '.') {
+                    } else if (board[xloc][yloc] != '.') {
                         return false;
                     }
                 }
@@ -133,20 +127,22 @@ public class Board {
     }
 
     public void addBlockUsingMatrix(char[][] block, int x, int y) {
+        int xOffset = Utils.findIndex(block[0]);
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
                 if (block[i][j] != '.') {
-                    board[x + i][y + j] = block[i][j];
+                    board[x + i][y + j - xOffset] = block[i][j];
                 }
             }
         }
     }
 
     public void removeBlockUsingMatrix(char[][] block, int x, int y, char letter) {
+        int xOffset = Utils.findIndex(block[0]);
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
                 if (block[i][j] == letter) {
-                    board[x + i][y + j] = '.';
+                    board[x + i][y + j - xOffset] = '.';
                 }
             }
         }
@@ -176,6 +172,7 @@ public class Board {
         }
         location[0] = -1;
         location[1] = -1;
+        // TODO: check if location valid
         return location;
     }
 }

@@ -8,9 +8,6 @@ public class Block {
     private char[][] block;
     private char letter;
 
-    // TODO: add color property
-    private String color;
-
     private ArrayList<char[][]> allVariantBlock = new ArrayList<char[][]>();
 
     // constructor
@@ -46,14 +43,15 @@ public class Block {
     }
 
     public ArrayList<char[][]> getAllVariantBlock() {
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 4; j++) {
-                allVariantBlock.add(block);
+        ArrayList<char[][]> temp = new ArrayList<char[][]>();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 2; j++) {
+                temp.add(block);
                 block = rotateBlock(block);
             }
             mirrorBlock();
         }
-        return this.allVariantBlock;
+        return temp;
     }
 
 
@@ -125,8 +123,7 @@ public class Block {
         for (int i = 0; i < lengthBlock; i++) {
             for (int j = 0; j < widthBlock; j++) {
                 if (block[i][j] == letter) {
-                    // TODO: print letter with color
-                    System.out.print(letter);
+                    new Utils().printColor(letter);
                 } else {
                     System.out.print(' ');
                 }
@@ -134,14 +131,4 @@ public class Block {
             System.out.println();
         }
     }
-
-    // public void getOrientations() {
-    //     for (int i = 0; i < 2; i++) {
-    //         for (int j = 0; j < 4; j++) {
-    //             rotateBlock();
-    //             allVariantBlock.add(block);
-    //         }
-    //         mirrorBlock();
-    //     }
-    // }
 }
