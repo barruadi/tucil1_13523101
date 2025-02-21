@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Scanner; 
 
 public class InputOutput {
-    static char[][] layout;
 
     public boolean fileExist(String filename) {
         return new File("test/input/" + filename + ".txt").isFile();
@@ -39,7 +38,7 @@ public class InputOutput {
 
             // read shape
             String s = reader.nextLine();
-            layout = new char[n][m];
+            char[][] layout = new char[n][m];
             // TODO: check shape
             if (s.equals("DEFAULT")) {
                 // biasa
@@ -110,7 +109,7 @@ public class InputOutput {
         }
 
         // TODO: handle when error
-        return new Board(0, 0, null, layout);
+        return new Board(0, 0, null, new char[0][0]);
     }
 
     public void writeFile(String filename, Board board, int iteration, long time) {

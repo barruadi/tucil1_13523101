@@ -8,8 +8,6 @@ public class Block {
     private char[][] block;
     private char letter;
 
-    private ArrayList<char[][]> allVariantBlock = new ArrayList<char[][]>();
-
     // constructor
     public Block(int lengthBlock, int widthBlock, char blockLetter) {
         this.lengthBlock = lengthBlock;
@@ -44,8 +42,8 @@ public class Block {
 
     public ArrayList<char[][]> getAllVariantBlock() {
         ArrayList<char[][]> temp = new ArrayList<char[][]>();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
                 temp.add(block);
                 block = rotateBlock(block);
             }

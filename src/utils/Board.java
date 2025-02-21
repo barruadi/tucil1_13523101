@@ -110,6 +110,7 @@ public class Board {
 
     public boolean validLocation(char[][] block, int x, int y) {
         int xOffset = Utils.findIndex(block[0]);
+
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
                 int xloc = (x + i);
@@ -128,6 +129,7 @@ public class Board {
 
     public void addBlockUsingMatrix(char[][] block, int x, int y) {
         int xOffset = Utils.findIndex(block[0]);
+
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
                 if (block[i][j] != '.') {
@@ -139,6 +141,7 @@ public class Board {
 
     public void removeBlockUsingMatrix(char[][] block, int x, int y, char letter) {
         int xOffset = Utils.findIndex(block[0]);
+        
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
                 if (block[i][j] == letter) {
@@ -157,22 +160,5 @@ public class Board {
                 }
             }
         }
-    }
-
-    public int[] findEmptyLocation() {
-        int[] location = new int[2];
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
-                if (board[i][j] == '.') {
-                    location[0] = i;
-                    location[1] = j;
-                    return location;
-                }
-            }
-        }
-        location[0] = -1;
-        location[1] = -1;
-        // TODO: check if location valid
-        return location;
     }
 }

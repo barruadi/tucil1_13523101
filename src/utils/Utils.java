@@ -35,12 +35,11 @@ public class Utils {
     String reset = "\u001B[0m";
 
     public void printColor(char alphabet) {
-        // if (alphabet == '#') {
-        //     System.out.print('.');
-        //     return;
-        // }
-        // System.out.print(colors[alphabet - 'A'] + alphabet + reset);
-        System.out.print(alphabet);
+        if (alphabet == '#' || alphabet == '.') {
+            System.out.print(' ');
+            return;
+        }
+        System.out.print(colors[alphabet - 'A'] + alphabet + reset);
     };
 
     public static void printWelcome() {
