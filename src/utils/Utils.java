@@ -43,7 +43,9 @@ public class Utils {
     };
 
     public static void printWelcome() {
-
+        System.out.println("+-------------------------------------+");
+        System.out.println("|  Welcome to IQ Puzzler Pro Solver!  |");
+        System.out.println("+-------------------------------------+");
     };
 
     public static String readInput(Scanner input, String line) {

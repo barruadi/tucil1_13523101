@@ -34,7 +34,7 @@ public class Board {
         this.width = width;
         this.blocks = blocks;
         this.board = layout;
-        this.blockAmount = blocks.size();
+        this.blockAmount = (blocks != null) ? blocks.size() : 0;
     }
 
     // getter

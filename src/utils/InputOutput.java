@@ -28,18 +28,42 @@ public class InputOutput {
             Scanner reader = new Scanner(myObj);
 
             // read board size
-            Integer n = reader.nextInt();
-            Integer m = reader.nextInt();
+            Integer n = null;
+            if (reader.hasNextInt()) {
+                n = reader.nextInt();
+            } else {
+                System.out.println("input tidak valid\nErrorInfo: N M P tidak sesuai format");
+                reader.close();
+                return new Board(0, 0, null, new char[0][0]);
+            }
+            Integer m = null;
+            if (reader.hasNextInt()) {
+                m = reader.nextInt();
+            } else {
+                System.out.println("input tidak valid\nErrorInfo: N M P tidak sesuai format");
+                reader.close();
+                return new Board(0, 0, null, new char[0][0]);
+            }
 
 
             // read block amount
-            Integer p = reader.nextInt();
+            Integer p = null;
+            if (reader.hasNextInt()) {
+                p = reader.nextInt();
+            } else {
+                System.out.println("input tidak valid\nErrorInfo: N M P tidak sesuai format");
+                reader.close();
+                return new Board(0, 0, null, new char[0][0]);
+            }
+
+            if (n == null || m == null || p == null) {
+                System.out.println("error");
+            }
             reader.nextLine();
 
             // read shape
             String s = reader.nextLine();
             char[][] layout = new char[n][m];
-            // TODO: check shape
             if (s.equals("DEFAULT")) {
                 // biasa
                 for (int i = 0; i < n; i++) {
@@ -67,15 +91,27 @@ public class InputOutput {
 
             // read block shapes
             Integer blockHeight = 1;
-            char blockLetter = 'A';
+            Integer totalBlock = 0;
+            char blockLetter = '-';
             ArrayList<Block> blocks = new ArrayList<Block>();
             Block newBlock = new Block(n, m, blockLetter);
 
             for (int i = 0; i < p; i++) {
+                if (totalBlock >= p) {
+                    System.out.println("input tidak valid\nErrorInfo: total piece melebihi");   
+                    reader.close();
+                    return new Board(0, 0, null, new char[0][0]);
+                }
                 // check if its last line
                 if (reader.hasNextLine() == false) {
                     newBlock.shrinkBlock();
                     blocks.add(newBlock);
+                    totalBlock++;
+                    if (totalBlock < p) {
+                        System.out.println("input tidak valid \nErrorInfo: total piece kurang");   
+                        reader.close();
+                        return new Board(0, 0, null, new char[0][0]);
+                    }
                     break;
                 }
             
@@ -85,16 +121,31 @@ public class InputOutput {
                 // if its new block
                 if (findChar(row) != blockLetter) {
                     // add block to list
-                    newBlock.shrinkBlock();
-                    blocks.add(newBlock);
+                    if (blockLetter != '-') {
+                        newBlock.shrinkBlock();
+                        blocks.add(newBlock);
+                        i--;
+                        totalBlock++;
+
+                    }
 
                     // create new block
                     blockLetter = findChar(row);
                     newBlock = new Block(n, m, blockLetter);
                     blockHeight = 1;
+                    if (blockHeight - 1 >= m) {
+                        System.out.println("input tidak valid \nErrorInfo: tinggi melebihi piece " + blockLetter);   
+                        reader.close();
+                        return new Board(0, 0, null, new char[0][0]);
+                    }
                     newBlock.addRow(row, blockHeight - 1);
                     blockHeight++;
                 } else {
+                    if (blockHeight -1 >= m) {
+                        System.out.println("input tidak valid \nErrorInfo: tinggi melebihi piece " + blockLetter);   
+                        reader.close();
+                        return new Board(0, 0, null, new char[0][0]);
+                    }
                     newBlock.addRow(row, blockHeight - 1);
                     blockHeight++;
                     i--;
@@ -104,11 +155,10 @@ public class InputOutput {
             return new Board(n, m, blocks, layout);
 
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("error..");
             e.printStackTrace();
         }
 
-        // TODO: handle when error
         return new Board(0, 0, null, new char[0][0]);
     }
 
